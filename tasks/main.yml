@@ -1,0 +1,20 @@
+---
+- action: phantomjs_facts
+
+- get_url:
+    url: "{{ phantomjs_url }}"
+    dest: "/tmp/phantomjs.tar.bz2"
+    force: true
+  when: "not phantomjs.installed or phantomjs.version != '{{ phantomjs_version }}'"
+
+- shell: "cd /tmp && tar xvjf /tmp/phantomjs.tar.bz2"
+  when: "not phantomjs.installed or phantomjs.version != '{{ phantomjs_version }}'"
+
+- shell: cp -f /tmp/{{ phantomjs_url | basename | filename_without_extension('.tar.bz2') }}/bin/phantomjs /usr/local/bin/phantomjs
+  sudo: true
+  when: "not phantomjs.installed or phantomjs.version != '{{ phantomjs_version }}'"
+
+- file:
+    path: /usr/local/bin/phantomjs
+    state: file
+    mode: 0755
