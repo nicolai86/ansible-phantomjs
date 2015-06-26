@@ -1,4 +1,9 @@
 ---
+- apt:
+    name: libfontconfig
+    state: latest
+  when: ansible_os_family == "Debian" and phantomjs_install_libfontconfig
+
 - action: phantomjs_facts
 
 - get_url:
